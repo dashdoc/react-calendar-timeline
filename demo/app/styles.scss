@@ -79,3 +79,17 @@ body {
 .header-background {
   background: azure;
 }
+
+.unassigned {
+  position: sticky;
+  bottom: 0;
+  background-color: white;
+  border-top: solid black 1px;
+}
+
+
+.rct-header-root {
+  position: sticky;
+  top: 0;
+  z-index: 2000;
+}
