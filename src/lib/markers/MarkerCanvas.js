@@ -20,7 +20,8 @@ const staticStyles = {
 class MarkerCanvas extends React.Component {
   static propTypes = {
     getDateFromLeftOffsetPosition: PropTypes.func.isRequired,
-    children: PropTypes.node
+    children: PropTypes.node,
+    translate: PropTypes.number
   }
 
   handleMouseMove = evt => {
@@ -63,10 +64,15 @@ class MarkerCanvas extends React.Component {
   }
 
   render() {
+    const styles = {
+      ...staticStyles,
+      transform: `translateY(-${this.props.translate || 0}px)`
+    };
+
     return (
       <MarkerCanvasProvider value={this.state}>
         <div
-          style={staticStyles}
+          style={styles}
           onMouseMove={this.handleMouseMove}
           onMouseLeave={this.handleMouseLeave}
           ref={el => (this.containerEl = el)}

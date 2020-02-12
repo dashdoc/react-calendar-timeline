@@ -446,6 +446,7 @@ export default class ReactCalendarTimeline extends Component {
     )
     if (componentScrollLeft !== scrollLeft) {
       this.scrollComponent.scrollLeft = scrollLeft
+      this.scrollComponent2.scrollLeft = scrollLeft
       this.scrollHeaderRef.scrollLeft = scrollLeft
     }
   }
@@ -490,6 +491,7 @@ export default class ReactCalendarTimeline extends Component {
     })
 
     this.scrollComponent.scrollLeft = width
+    this.scrollComponent2.scrollLeft = width
     this.scrollHeaderRef.scrollLeft = width
   }
 
@@ -786,6 +788,25 @@ export default class ReactCalendarTimeline extends Component {
     )
   }
 
+  rows2(canvasWidth, groupHeights, allGroups) {
+    const groups = [allGroups[allGroups.length - 1]]
+    return (
+      <GroupRows
+        groups={groups}
+        canvasWidth={canvasWidth}
+        lineCount={_length(groups)}
+        groupHeights={groupHeights}
+        clickTolerance={this.props.clickTolerance}
+        onRowClick={this.handleRowClick}
+        onRowDoubleClick={this.handleRowDoubleClick}
+        horizontalLineClassNamesForGroup={
+          this.props.horizontalLineClassNamesForGroup
+        }
+        onRowContextClick={this.handleScrollContextMenu}
+      />
+    )
+  }
+
   items(
     canvasTimeStart,
     zoom,
@@ -965,6 +986,11 @@ export default class ReactCalendarTimeline extends Component {
     this.scrollComponent = el
   }
 
+  getScrollElementRef2 = el => {
+    this.props.scrollRef(el)
+    this.scrollComponent2 = el
+  }
+
   render() {
     const {
       items,
@@ -1015,8 +1041,20 @@ export default class ReactCalendarTimeline extends Component {
       groupTops = stackResults.groupTops
     }
 
+
+
+    const height2 = groupHeights[groupHeights.length - 1]
+    const height1 = height - height2
+    const groupHeights1 = groupHeights.slice(0, -1)
+    const groupHeights2 = [groupHeights[groupHeights.length - 1]]
+    const groups1 = groups.slice(0, -1)
+    const groups2 = [groups[groups.length - 1]]
+    const groupTops2 = [groupTops[groupTops.length - 1]]
     const outerComponentStyle = {
-      height: `${height}px`
+      height: `${height1}px`
+    }
+    const outerComponentStyle2 = {
+      height: `${height2}px`
     }
 
     return (
@@ -1044,11 +1082,19 @@ export default class ReactCalendarTimeline extends Component {
             >
               {this.renderHeaders()}
               <div style={outerComponentStyle} className="rct-outer">
-                {sidebarWidth > 0 ? this.sidebar(height, groupHeights) : null}
+                <Sidebar
+                  groups={groups1}
+                  groupRenderer={this.props.groupRenderer}
+                  keys={this.props.keys}
+                  width={sidebarWidth}
+                  groupHeights={groupHeights1}
+                  height={height1}
+                />
+                {/* {sidebarWidth > 0 ? this.sidebar(height, groupHeights) : null} */}
                 <ScrollElement
                   scrollRef={this.getScrollElementRef}
                   width={width}
-                  height={height}
+                  height={height1}
                   onZoom={this.changeZoom}
                   onWheelZoom={this.handleWheelZoom}
                   traditionalZoom={traditionalZoom}
@@ -1062,7 +1108,7 @@ export default class ReactCalendarTimeline extends Component {
                       canvasWidth,
                       minUnit,
                       timeSteps,
-                      height
+                      height1
                     )}
                     {this.rows(canvasWidth, groupHeights, groups)}
                     {this.items(
@@ -1093,6 +1139,67 @@ export default class ReactCalendarTimeline extends Component {
                 {rightSidebarWidth > 0
                   ? this.rightSidebar(height, groupHeights)
                   : null}
+              </div>
+              <div style={outerComponentStyle2} className="rct-outer unassigned">
+              <Sidebar
+                  groups={groups2}
+                  groupRenderer={this.props.groupRenderer}
+                  keys={this.props.keys}
+                  width={sidebarWidth}
+                  groupHeights={groupHeights2}
+                  height={height2}
+                />
+                {/* {sidebarWidth > 0 ? this.sidebar(height2, groupHeights2) : null} */}
+                <ScrollElement
+                  scrollRef={this.getScrollElementRef2}
+                  width={width}
+                  height={height2}
+                  onZoom={this.changeZoom}
+                  onWheelZoom={this.handleWheelZoom}
+                  traditionalZoom={traditionalZoom}
+                  onScroll={this.onScroll}
+                  isInteractingWithItem={isInteractingWithItem}
+                >
+                  <MarkerCanvas
+                    translate={height1}
+                  >
+                    {this.columns(
+                      canvasTimeStart,
+                      canvasTimeEnd,
+                      canvasWidth,
+                      minUnit,
+                      timeSteps,
+                      height
+                    )}
+                    {this.rows2(canvasWidth, groupHeights2, groups2)}
+                    {this.items(
+                      canvasTimeStart,
+                      zoom,
+                      canvasTimeEnd,
+                      canvasWidth,
+                      minUnit,
+                      dimensionItems,
+                      groupHeights,
+                      groupTops
+                    )}
+                    {this.childrenWithProps(
+                      canvasTimeStart,
+                      canvasTimeEnd,
+                      canvasWidth,
+                      dimensionItems,
+                      groupHeights,
+                      groupTops,
+                      height,
+                      visibleTimeStart,
+                      visibleTimeEnd,
+                      minUnit,
+                      timeSteps
+                    )}
+                  </MarkerCanvas>
+                </ScrollElement>
+                {/* {rightSidebarWidth > 0
+                  ? this.rightSidebar(height2, groupHeights2)
+                  : null} */}
               </div>
             </div>
           </TimelineHeadersProvider>
