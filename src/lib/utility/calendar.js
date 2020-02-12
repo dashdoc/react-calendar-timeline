@@ -362,10 +362,6 @@ export function groupNoStack(lineHeight, item, groupHeight, groupTop) {
   return { groupHeight, verticalMargin: 0, itemTop: item.dimensions.top }
 }
 
-function sum(arr = []) {
-  return arr.reduce((acc, i) => acc + i, 0)
-}
-
 /**
  * Stack all groups
  * @param {*} items items to be stacked
@@ -377,12 +373,13 @@ export function stackAll(itemsDimensions, groupOrders, lineHeight, stackItems) {
   var groupHeights = []
   var groupTops = []
 
+  let heightPartialSum = 0
   var groupedItems = getGroupedItems(itemsDimensions, groupOrders)
 
   for (var index in groupedItems) {
     const groupItems = groupedItems[index]
     const { items: itemsDimensions, group } = groupItems
-    const groupTop = sum(groupHeights)
+    const groupTop = heightPartialSum
 
     // Is group being stacked?
     const isGroupStacked =
@@ -401,10 +398,11 @@ export function stackAll(itemsDimensions, groupOrders, lineHeight, stackItems) {
     } else {
       groupHeights.push(Math.max(groupHeight, lineHeight))
     }
+    heightPartialSum += groupHeights[groupHeights.length - 1]
   }
-  
+
   return {
-    height: sum(groupHeights),
+    height: heightPartialSum,
     groupHeights,
     groupTops
   }
