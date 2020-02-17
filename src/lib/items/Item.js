@@ -179,7 +179,7 @@ export default class Item extends Component {
       }
       let groupDelta = 0
       if (e.interaction._eventTarget) {
-        if (e.interaction._eventTarget.closest('.unassigned')) {
+        if (e.interaction._eventTarget.closest('.footer-wrapper')) {
           return groupTops.length - 1 - this.props.order.index
         }
       }
