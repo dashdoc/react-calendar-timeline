@@ -179,6 +179,7 @@ export default class Item extends Component {
       }
       let groupDelta = 0
       if (e.interaction._eventTarget) {
+        console.log(e.interaction._eventTarget.closest('.footer-wrapper') || 'null')
         if (e.interaction._eventTarget.closest('.footer-wrapper')) {
           return groupTops.length - 1 - this.props.order.index
         }
