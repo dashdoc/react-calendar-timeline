@@ -80,13 +80,19 @@ body {
   background: azure;
 }
 
-.unassigned {
+.top-wrapper {
+  max-height: calc((100vh - 98px) * 0.7);
+  overflow-y: scroll;
+}
+
+.footer-wrapper {
   position: sticky;
   bottom: 0;
+  max-height: calc((100vh - 98px) * 0.3);
+  overflow-y: scroll;
   background-color: white;
   border-top: solid black 1px;
 }
-
 
 .rct-header-root {
   position: sticky;
