@@ -394,9 +394,9 @@ export function stackAll(itemsDimensions, groupOrders, lineHeight, stackItems) {
     // Do this late as item position still needs to be calculated
     groupTops.push(groupTop)
 
-    const groupHeight = Math.max(groupHeight, lineHeight, group.height || 0)
-    groupHeights.push(groupHeight)
-    heightPartialSum += groupHeight
+    const displayHeight = Math.max(groupHeight, lineHeight, group.height || 0)
+    groupHeights.push(displayHeight)
+    heightPartialSum += displayHeight
   }
 
   return {
