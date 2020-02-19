@@ -393,12 +393,10 @@ export function stackAll(itemsDimensions, groupOrders, lineHeight, stackItems) {
     // If group height is overridden, push new height
     // Do this late as item position still needs to be calculated
     groupTops.push(groupTop)
-    if (group.height) {
-      groupHeights.push(group.height)
-    } else {
-      groupHeights.push(Math.max(groupHeight, lineHeight))
-    }
-    heightPartialSum += groupHeights[groupHeights.length - 1]
+
+    const groupHeight = Math.max(groupHeight, lineHeight, group.height || 0)
+    groupHeights.push(groupHeight)
+    heightPartialSum += groupHeight
   }
 
   return {
@@ -409,11 +407,11 @@ export function stackAll(itemsDimensions, groupOrders, lineHeight, stackItems) {
 }
 
 /**
- * 
- * @param {*} itemsDimensions 
- * @param {*} isGroupStacked 
- * @param {*} lineHeight 
- * @param {*} groupTop 
+ *
+ * @param {*} itemsDimensions
+ * @param {*} isGroupStacked
+ * @param {*} lineHeight
+ * @param {*} groupTop
  */
 export function stackGroup(itemsDimensions, isGroupStacked, lineHeight, groupTop) {
   var groupHeight = 0

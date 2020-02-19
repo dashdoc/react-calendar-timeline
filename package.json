@@ -1,6 +1,6 @@
 {
   "name": "poc-react-calendar-timeline",
-  "version": "0.26.13",
+  "version": "0.26.14",
   "description": "react calendar timeline",
   "main": "lib/index.js",
   "scripts": {
