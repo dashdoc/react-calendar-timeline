@@ -54,7 +54,8 @@ export default class Items extends Component {
     dimensionItems: PropTypes.array,
     groupTops: PropTypes.array,
     useResizeHandle: PropTypes.bool,
-    scrollRef: PropTypes.object
+    scrollRef: PropTypes.object,
+    filter: PropTypes.func
   }
 
   static defaultProps = {
@@ -77,7 +78,7 @@ export default class Items extends Component {
       nextProps.canChangeGroup === this.props.canChangeGroup &&
       nextProps.canMove === this.props.canMove &&
       nextProps.canResize === this.props.canResize &&
-      nextProps.canSelect === this.props.canSelect     
+      nextProps.canSelect === this.props.canSelect
     )
   }
 
@@ -91,9 +92,9 @@ export default class Items extends Component {
   }
 
   getVisibleItems(canvasTimeStart, canvasTimeEnd) {
-    const { keys, items } = this.props
+    const { keys, items, filter} = this.props
 
-    return getVisibleItems(items, canvasTimeStart, canvasTimeEnd, keys)
+    return getVisibleItems(items, canvasTimeStart, canvasTimeEnd, keys, filter)
   }
 
   render() {

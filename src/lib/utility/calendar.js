@@ -274,11 +274,12 @@ export function getGroupedItems(items, groupOrders) {
   return groupedItems
 }
 
-export function getVisibleItems(items, canvasTimeStart, canvasTimeEnd, keys) {
+export function getVisibleItems(items, canvasTimeStart, canvasTimeEnd, keys, filter=() => true) {
   const { itemTimeStartKey, itemTimeEndKey } = keys
 
   return items.filter(item => {
     return (
+      filter(item) &&
       _get(item, itemTimeStartKey) <= canvasTimeEnd &&
       _get(item, itemTimeEndKey) >= canvasTimeStart
     )

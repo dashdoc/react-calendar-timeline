@@ -290,6 +290,14 @@ export default class Item extends Component {
       })
       .on('dragend', e => {
         if (this.state.dragging) {
+          const nextState = {
+            dragging: false,
+            dragStart: null,
+            preDragPosition: null,
+            dragTime: null,
+            dragGroupDelta: null
+          }
+
           if (this.props.onDrop) {
             let dragTime = this.dragTime(e)
 
@@ -300,21 +308,18 @@ export default class Item extends Component {
                 dragTime
               )
             }
+            const targetGroup = this.props.order.index + this.dragGroupDelta(e)
+
+            this.setState(nextState)
 
             this.props.onDrop(
               this.itemId,
               dragTime,
-              this.props.order.index + this.dragGroupDelta(e)
+              targetGroup
             )
+          } else {
+            this.setState(nextState)
           }
-
-          this.setState({
-            dragging: false,
-            dragStart: null,
-            preDragPosition: null,
-            dragTime: null,
-            dragGroupDelta: null
-          })
         }
       })
       .on('resizestart', e => {

@@ -37,12 +37,12 @@ class ScrollElement extends Component {
       el.addEventListener('wheel', this.handleWheel, {passive: false});
     }
   }
-  
+
 
   handleWheel = e => {
     const { traditionalZoom } = this.props
 
-    
+
 
     // zoom in the time dimension
     if (e.ctrlKey || e.metaKey || e.altKey) {

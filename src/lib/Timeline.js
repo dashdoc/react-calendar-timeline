@@ -815,7 +815,8 @@ export default class ReactCalendarTimeline extends Component {
     minUnit,
     dimensionItems,
     groupHeights,
-    groupTops
+    groupTops,
+    filter,
   ) {
     return (
       <Items
@@ -846,6 +847,7 @@ export default class ReactCalendarTimeline extends Component {
         itemRenderer={this.props.itemRenderer}
         selected={this.props.selected}
         scrollRef={this.scrollComponent}
+        filter={filter}
       />
     )
   }
@@ -1048,7 +1050,8 @@ export default class ReactCalendarTimeline extends Component {
     const groupHeights1 = groupHeights.slice(0, -1)
     const groupHeights2 = [groupHeights[groupHeights.length - 1]]
     const groups1 = groups.slice(0, -1)
-    const groups2 = [groups[groups.length - 1]]
+    const unassignedGroup = groups[groups.length - 1]
+    const groups2 = [unassignedGroup]
     const groupTops2 = [groupTops[groupTops.length - 1]]
     const outerComponentStyle = {
       height: `${height1}px`
@@ -1056,6 +1059,7 @@ export default class ReactCalendarTimeline extends Component {
     const outerComponentStyle2 = {
       height: `${height2}px`
     }
+    const {id: unassignedGroupId} = unassignedGroup
 
     return (
       <TimelineStateProvider
@@ -1120,7 +1124,8 @@ export default class ReactCalendarTimeline extends Component {
                         minUnit,
                         dimensionItems,
                         groupHeights,
-                        groupTops
+                        groupTops,
+                        ({id, group}) => group !== String(unassignedGroupId) || id === draggingItem
                       )}
                       {this.childrenWithProps(
                         canvasTimeStart,
@@ -1183,7 +1188,8 @@ export default class ReactCalendarTimeline extends Component {
                         minUnit,
                         dimensionItems,
                         groupHeights,
-                        groupTops
+                        groupTops,
+                        ({id, group}) => group === String(unassignedGroupId) || id === draggingItem
                       )}
                       {this.childrenWithProps(
                         canvasTimeStart,
