@@ -1125,7 +1125,7 @@ export default class ReactCalendarTimeline extends Component {
                         dimensionItems,
                         groupHeights,
                         groupTops,
-                        ({id, group}) => group !== String(unassignedGroupId) || id === draggingItem
+                        ({id, group}) => group != unassignedGroupId || id === draggingItem
                       )}
                       {this.childrenWithProps(
                         canvasTimeStart,
@@ -1189,7 +1189,7 @@ export default class ReactCalendarTimeline extends Component {
                         dimensionItems,
                         groupHeights,
                         groupTops,
-                        ({id, group}) => group === String(unassignedGroupId) || id === draggingItem
+                        ({id, group}) => group == unassignedGroupId || id === draggingItem
                       )}
                       {this.childrenWithProps(
                         canvasTimeStart,
